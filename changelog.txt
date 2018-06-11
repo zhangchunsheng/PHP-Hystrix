@@ -3,6 +3,7 @@
 
 [PHP-Hystrix_1.0.0.1 2018-06-11 张春生]
 1.新功能:add config class
+2.新功能:add abstract command
 
 --备注分类
 1、新功能：
