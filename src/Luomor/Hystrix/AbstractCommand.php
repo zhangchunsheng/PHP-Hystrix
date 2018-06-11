@@ -417,7 +417,7 @@ abstract class AbstractCommand {
      * @return float
      */
     private function getTimeInMilliseconds() {
-        return floor(microtime(true) * 1000)
+        return floor(microtime(true) * 1000);
     }
 
     /**
