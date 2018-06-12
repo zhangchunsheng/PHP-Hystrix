@@ -5,6 +5,10 @@
 1.新功能:add config class
 2.新功能:add abstract command
 
+[PHP-Hystrix_1.0.0.1 2018-06-12 张春生]
+1.新功能:add yac storage
+2.新功能:add apc storage
+
 --备注分类
 1、新功能：
 2、Bug:

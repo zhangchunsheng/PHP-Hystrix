@@ -2,12 +2,17 @@
 /**
  * Created by PhpStorm.
  * User: peterzhang
- * Date: 11/06/2018
- * Time: 8:09 PM
+ * Date: 12/06/2018
+ * Time: 2:17 PM
  */
 namespace Luomor\Hystrix;
 
-class YacStateStorage implements StateStorageInterface {
+/**
+ * Class ApcStateStorage
+ * APC cache driven storage for Circuit Breaker metrics statistics
+ * @package Luomor\Hystrix
+ */
+class ApcStateStorage implements StateStorageInterface {
     const BUCKET_EXPIRE_SECONDS = 120;
 
     const CACHE_PREFIX = 'hystrix_cb_';
@@ -16,47 +21,23 @@ class YacStateStorage implements StateStorageInterface {
 
     const SINGLE_TEST_BLOCKED = 'single_test_blocked';
 
-    private $_yac = null;
-
     /**
-     * YacStateStorage constructor.
-     * @throws Exception\YacNotLoadedException
+     * ApcStateStorage constructor.
      */
     public function __construct() {
-        if(!extension_loaded('yac')) {
-            throw new Exception\YacNotLoadedException('"yac" PHP extension is required for Hystrix to work');
+        if(!extension_loaded('apc')) {
+            throw new Exception\ApcNotLoadedException('"apc" PHP extension is required for Hystrix to work');
         }
-
-        $this->_yac = new Yac();
     }
 
     /**
      * Prepends cache prefix and filters out invalid characters
      *
-     * @param string $name
+     * @param $name
      * @return string
      */
     protected function prefix($name) {
         return self::CACHE_PREFIX . $name;
-    }
-
-    /**
-     * Increments counter value for the given bucket
-     *
-     * @param string $commandKey
-     * @param string $type
-     * @param integer $index
-     */
-    public function incrementBucket($commandKey, $type, $index) {
-        // lock
-        $bucketName = $this->prefix($commandKey . '_' . $type . '_' . $index);
-        $number = $this->_yac->get($bucketName);
-        if(empty($number)) {
-            $number = 1;
-        } else {
-            $number++;
-        }
-        $this->_yac->set($bucketName, $number, self::BUCKET_EXPIRE_SECONDS);
     }
 
     /**
@@ -69,36 +50,56 @@ class YacStateStorage implements StateStorageInterface {
      */
     public function getBucket($commandKey, $type, $index) {
         $bucketName = $this->prefix($commandKey . '_' . $type . '_' . $index);
-        return $this->_yac->get($bucketName);
+        return apc_fetch($bucketName);
     }
 
+    /**
+     * Increments counter value for the given bucket
+     * @param $commandKey
+     * @param $type
+     * @param $index
+     */
+    public function incrementBucket($commandKey, $type, $index) {
+        $bucketName = $this->prefix($commandKey . '_' . $type . '_' . $index);
+        if(!apc_add($bucketName, 1, self::BUCKET_EXPIRE_SECONDS)) {
+            apc_inc($bucketName);
+        }
+    }
+
+    /**
+     * If the given bucket is found, sets counter value to 0.
+     *
+     * @param string $commandKey Circuit breaker key
+     * @param int $type
+     * @param int $index
+     */
+    public function resetBucket($commandKey, $type, $index) {
+        $bucketName = $this->prefix($commandKey . '_' . $type . '_' . $index);
+        if(apc_exists($bucketName)) {
+            apc_store($bucketName, 0, self::BUCKET_EXPIRE_SECONDS);
+        }
+    }
+
+    /**
+     * Marks the given circuit as open
+     *
+     * @param string $commandKey Circuit key
+     * @param int $sleepingWindowInMilliseconds In how much time we should allow a single test
+     */
     public function openCircuit($commandKey, $sleepingWindowInMilliseconds) {
         $openedKey = $this->prefix($commandKey . self::OPENED_NAME);
         $singleTestFlagKey = $this->prefix($commandKey . self::SINGLE_TEST_BLOCKED);
 
-        $this->_yac->set($openedKey, true);
-
+        apc_store($openedKey, true);
         // the single test blocked flag will expire automatically in $sleepingWindowInMilliseconds
-        // thus allowing us a single test. Notice, yac doesn't allow us to use
+        // thus allowing us a single test. Notice, APC doesn't allow us to use
         // expire time less than a second.
         $sleepingWindowInSeconds = ceil($sleepingWindowInMilliseconds / 1000);
-        $this->_yac->set($singleTestFlagKey, true, $sleepingWindowInSeconds);
-
-    }
-
-    /**
-     * Marks the given circuit as closed
-     *
-     * @param string $commandKey Circuit key
-     */
-    public function closeCircuit($commandKey) {
-        $openedKey = $this->prefix($commandKey . self::OPENED_NAME);
-        $this->_yac->set($openedKey, false);
+        apc_add($singleTestFlagKey, true, $sleepingWindowInSeconds);
     }
 
     /**
      * Whether a single test is allowed
-     *
      * @param string $commandKey Circuit breaker key
      * @param int $sleepingWindowInMilliseconds In how much time we should allow the next single test
      * @return bool
@@ -107,8 +108,8 @@ class YacStateStorage implements StateStorageInterface {
         $singleTestFlagKey = $this->prefix($commandKey . self::SINGLE_TEST_BLOCKED);
         // using 'add' enforces thread safety.
         $sleepingWindowInSeconds = ceil($sleepingWindowInMilliseconds / 1000);
-        // another yac limitation is that within the current request variables will never expire.
-        return (boolean) $this->_yac->set($singleTestFlagKey, true, $sleepingWindowInSeconds);
+        // anther APC limitation is that within the current request variables will never expire.
+        return (boolean) apc_add($singleTestFlagKey, true, $sleepingWindowInSeconds);
     }
 
     /**
@@ -119,18 +120,16 @@ class YacStateStorage implements StateStorageInterface {
      */
     public function isCircuitOpen($commandKey) {
         $openedKey = $this->prefix($commandKey . self::OPENED_NAME);
-        return (boolean) $this->_yac->get($openedKey);
+        return (boolean) apc_fetch($openedKey);
     }
 
     /**
-     * If the given bucket is found, sets counter value to 0.
+     * Marks the given circuit as closed
      *
-     * @param string $commandKey
-     * @param integer $type
-     * @param integer $index
+     * @param string $commandKey Circuit key
      */
-    public function resetBucket($commandKey, $type, $index) {
-        $bucketName = $this->prefix($commandKey . '_' . $type . '_' . $index);
-        $this->_yac->set($bucketName, 0, self::BUCKET_EXPIRE_SECONDS);
+    public function closeCircuit($commandKey) {
+        $openedKey = $this->prefix($commandKey . self::OPENED_NAME);
+        apc_store($openedKey, false);
     }
 }

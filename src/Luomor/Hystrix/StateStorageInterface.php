@@ -20,7 +20,6 @@ interface StateStorageInterface {
      * @param $commandKey
      * @param $type
      * @param $index
-     * @return mixed
      */
     public function incrementBucket($commandKey, $type, $index);
 
@@ -39,7 +38,6 @@ interface StateStorageInterface {
      *
      * @param string $commandKey
      * @param integer $sleepingWindowInMilliseconds In how much time we should allow a single test
-     * @return mixed
      */
     public function openCircuit($commandKey, $sleepingWindowInMilliseconds);
 
@@ -47,7 +45,6 @@ interface StateStorageInterface {
      * Marks the given circuit as closed
      *
      * @param string $commandKey Circuit key
-     * @return mixed
      */
     public function closeCircuit($commandKey);
 
@@ -74,7 +71,6 @@ interface StateStorageInterface {
      * @param string $commandKey Circuit breaker key
      * @param integer $type
      * @param integer $index
-     * @return mixed
      */
     public function resetBucket($commandKey, $type, $index);
 }
