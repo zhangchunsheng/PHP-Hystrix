@@ -17,5 +17,8 @@ namespace Luomor\Hystrix;
  * @package Luomor\Hystrix
  */
 class CommandMetrics {
-
+    /**
+     * @var MetricsCounter
+     */
+    private $counter;
 }

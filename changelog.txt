@@ -9,6 +9,7 @@
 1.新功能:add yac storage
 2.新功能:add apc storage
 3.新功能:add array storage
+4.新功能:add circuit breaker
 
 --备注分类
 1、新功能：

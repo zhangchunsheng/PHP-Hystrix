@@ -12,5 +12,31 @@ namespace Luomor\Hystrix;
  * @package Luomor\Hystrix
  */
 interface CircuitBreakerInterface {
+    /**
+     * Whether the circuit is open
+     *
+     * @return mixed
+     */
+    public function isOpen();
 
+    /**
+     * Whether the request is allowed
+     *
+     * @return mixed
+     */
+    public function allowRequest();
+
+    /**
+     * Whether a single test is allowed now
+     *
+     * @return mixed
+     */
+    public function allowSingleTest();
+
+    /**
+     * Marks a successful request
+     *
+     * @return mixed
+     */
+    public function markSuccess();
 }

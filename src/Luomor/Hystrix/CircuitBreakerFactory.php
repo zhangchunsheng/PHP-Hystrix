@@ -16,5 +16,43 @@ use Luomor\Config\Config;
  * @package Luomor\Hystrix
  */
 class CircuitBreakerFactory {
+    /**
+     * @var array
+     */
+    protected $circuitBreakersByCommand = array();
 
+    /**
+     * @var StateStorageInterface
+     */
+    protected $stateStorage;
+
+    /**
+     * CircuitBreakerFactory constructor.
+     * @param StateStorageInterface $stateStorage
+     */
+    public function __construct(StateStorageInterface $stateStorage) {
+        $this->stateStorage = $stateStorage;
+    }
+
+    /**
+     * Get circuit breaker instance by command key for given command config
+     *
+     * @param string $commandKey
+     * @param Config $commandConfig
+     * @param CommandMetrics $metrics
+     * @return CircuitBreakerInterface
+     */
+    public function get($commandKey, Config $commandConfig, CommandMetrics $metrics) {
+        if(!isset($this->circuitBreakersByCommand[$commandKey])) {
+            $circuitBreakerConfig = $commandConfig->get('circuitBreaker');
+            if($circuitBreakerConfig->get('enabled')) {
+                $this->circuitBreakersByCommand[$commandKey] =
+                    new CircuitBreaker($commandKey, $metrics, $commandConfig, $this->stateStorage);
+            } else {
+                $this->circuitBreakersByCommand[$commandKey] = new NoOpCircuitBreaker();
+            }
+        }
+
+        return $this->circuitBreakersByCommand[$commandKey];
+    }
 }
