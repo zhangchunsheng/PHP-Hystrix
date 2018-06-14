@@ -13,6 +13,7 @@
 
 [PHP-Hystrix_1.0.0.1 2018-06-14 张春生]
 1.新功能:add circuit breaker
+2.新功能:add command metrics
 
 --备注分类
 1、新功能：
