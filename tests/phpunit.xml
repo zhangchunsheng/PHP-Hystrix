@@ -1,0 +1,5 @@
+<phpunit colors="true" bootstrap="./bootstrap.php">
+    <testsuite name="Luomor_Hystrix">
+        <directory>./Tests</directory>
+    </testsuite>
+</phpunit>
