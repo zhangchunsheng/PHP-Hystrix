@@ -377,7 +377,7 @@ class CommandTest extends \PHPUnit_Framework_TestCase {
             ->with('Tests\Luomor\Hystrix\CommandMock')
             ->will($this->returnValue($this->commandMetrics));
         /** @var RequestCache|\PHPUnit_Framework_MockObject_MockObject $requestCache */
-        $requestCache = $this->getMock('Luomor\Hystrix\RequestCahce');
+        $requestCache = $this->getMock('Luomor\Hystrix\RequestCache');
         $requestCache->expects($this->once())
             ->method('exists')
             ->with('Tests\Luomor\Hystrix\CommandMock', 'test-cache-key')
