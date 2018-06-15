@@ -165,7 +165,7 @@ class CommandTest extends \PHPUnit_Framework_TestCase {
     /**
      * Ensure command does not break when configured to big, though one hasn't been injected
      *
-     * @dataProvider  $configBoolProvider
+     * @dataProvider  configBoolProvider
      *
      * @param bool $logEnabled whether config is set to use request log
      */
