@@ -47,7 +47,7 @@ class CommandTest extends \PHPUnit_Framework_TestCase {
     protected function setUp() {
         $this->circuitBreakerFactory = $this->getMock('Luomor\Hystrix\CircuitBreakerFactory', array(), array(), '', false);
         $this->circuitBreaker = $this->getMock('Luomor\Hystrix\CircuitBreakerInterface', array(), array(), '', false);
-        $this->commandMetricsFActory = $this->getMock('Luomor\Hystrix\CircuitMetricsFactory', array(), array(), '', false);
+        $this->commandMetricsFactory = $this->getMock('Luomor\Hystrix\CircuitMetricsFactory', array(), array(), '', false);
         $this->commandMetrics = $this->getMock('Luomor\Hystrix\CommandMetrics', array(), array(), '', false);
 
         $this->command = new CommandMock();
