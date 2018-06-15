@@ -16,6 +16,9 @@
 2.新功能:add command metrics
 3.新功能:add request cache and log
 
+[PHP-Hystrix_1.0.0.1 2018-06-15 张春生]
+1.新功能:add command test
+
 --备注分类
 1、新功能：
 2、Bug:
