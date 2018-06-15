@@ -162,6 +162,13 @@ class CommandTest extends \PHPUnit_Framework_TestCase {
         $this->assertEmpty($this->requestLog->getExecutedCommands());
     }
 
+    /**
+     * Ensure command does not break when configured to big, though one hasn't been injected
+     *
+     * @dataProvider  $configBoolProvider
+     *
+     * @param bool $logEnabled whether config is set to use request log
+     */
     public function testRequestLogNotInjected($logEnabled) {
         // Duplicate some of the class setup in order to bypass requestLog generation
         $command = new CommandMock();
