@@ -43,7 +43,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase {
                 'errorThresholdPercentage' => 10
             ),
             'metrics' => array(
-                'rollingStatisticalWindowInMilliseconds' => 20000,
+                'rollingStatisticalWindowInMilliseconds' => 300000,
                 'rollingStatisticalWindowBuckets' => 2,
                 'healthSnapshotIntervalInMilliseconds' => 3000,
             ),
