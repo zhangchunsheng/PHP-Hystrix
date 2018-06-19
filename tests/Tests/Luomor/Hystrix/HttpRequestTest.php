@@ -7,9 +7,16 @@
  */
 namespace Tests\Luomor\Hystrix;
 
+use Luomor\Hystrix\ApcStateStorage;
+use Luomor\Hystrix\CommandMetricsFactory;
+
 class HttpRequestTest extends \PHPUnit_Framework_TestCase {
     public function testHttpRequest() {
         $command = new HttpRequest();
+
+        $apcStateStorage = new ApcStateStorage();
+        $commandMetricsFactory = new CommandMetricsFactory($apcStateStorage);
+        $command->setCommandMetricsFactory($commandMetricsFactory);
 
         $command->execute();
     }
