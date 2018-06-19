@@ -77,7 +77,7 @@ class HttpRequestTest extends AbstractCommand {
 
 $command = new HttpRequestTest();
 
-$command->url = "http://base1.lan-tc.yongche.org/api/dict/getDictData";
+$command->url = "http://base.lan-tc.yongche.org/api/dict/getDictData";
 $apcStateStorage = new ApcuStateStorage();
 $commandMetricsFactory = new CommandMetricsFactory($apcStateStorage);
 $command->setCommandMetricsFactory($commandMetricsFactory);
