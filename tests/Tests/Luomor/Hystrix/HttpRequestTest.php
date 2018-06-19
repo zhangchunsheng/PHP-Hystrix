@@ -44,7 +44,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase {
             ),
             'metrics' => array(
                 'rollingStatisticalWindowInMilliseconds' => 300000,
-                'rollingStatisticalWindowBuckets' => 2,
+                'rollingStatisticalWindowBuckets' => 1,
                 'healthSnapshotIntervalInMilliseconds' => 3000,
             ),
         ), true));
