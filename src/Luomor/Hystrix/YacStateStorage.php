@@ -27,7 +27,7 @@ class YacStateStorage implements StateStorageInterface {
             throw new Exception\YacNotLoadedException('"yac" PHP extension is required for Hystrix to work');
         }
 
-        $this->_yac = new Yac();
+        $this->_yac = new \Yac();
     }
 
     /**
