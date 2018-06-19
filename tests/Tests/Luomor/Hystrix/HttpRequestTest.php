@@ -9,6 +9,7 @@ namespace Tests\Luomor\Hystrix;
 
 use Luomor\Config\Config;
 use Luomor\Hystrix\YacStateStorage;
+use Luomor\Hystrix\ApcuStateStorage;
 use Luomor\Hystrix\CircuitBreakerFactory;
 use Luomor\Hystrix\CommandMetricsFactory;
 use Luomor\Hystrix\RequestCache;
@@ -19,7 +20,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase {
         $command = new HttpRequest();
 
         $command->url = "http://base1.lan-tc.yongche.org/api/dict/getDictData";
-        $apcStateStorage = new YacStateStorage();
+        $apcStateStorage = new ApcuStateStorage();
         $commandMetricsFactory = new CommandMetricsFactory($apcStateStorage);
         $command->setCommandMetricsFactory($commandMetricsFactory);
         $circuitBreakerFactory = new CircuitBreakerFactory($apcStateStorage);
