@@ -36,6 +36,11 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase {
             'requestLog' => array(
                 'enabled' => true,
             ),
+            'metrics' => array(
+                'rollingStatisticalWindowInMilliseconds' => 1000,
+                'rollingStatisticalWindowBuckets' => 2,
+                'healthSnapshotIntervalInMilliseconds' => 3000,
+            ),
         ), true));
 
         $command->execute();
