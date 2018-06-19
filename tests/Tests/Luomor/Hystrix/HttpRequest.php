@@ -31,7 +31,7 @@ class HttpRequest extends AbstractCommand {
 
             if(curl_error($ch)) {
                 $errMsg = curl_error($ch);
-                throw new BadRequestException($errMsg);
+                throw new \Exception($errMsg);
             }
 
             curl_close($ch);
@@ -41,7 +41,7 @@ class HttpRequest extends AbstractCommand {
         }
 
         if(empty($result)) {
-            throw new BadRequestException('not result');
+            throw new \Exception('not result');
         }
 
         $arrResult = json_decode($result, true);
@@ -50,7 +50,7 @@ class HttpRequest extends AbstractCommand {
         if($jsonError == JSON_ERROR_NONE) {
             return $arrResult;
         } else {
-            throw new BadRequestException('json decode error');
+            throw new \Exception('json decode error');
         }
     }
 
