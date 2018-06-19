@@ -67,6 +67,7 @@ class CircuitBreaker implements CircuitBreakerInterface {
      * @return boolean
      */
     public function isOpen() {
+        echo "isOpen";
         if($this->stateStorage->isCircuitOpen($this->commandKey)) {
             // if we're open we immediately return true and don't bother attempting to 'close' ourself
             // as that is left to allowSingleTest and a subsequent successful test to close

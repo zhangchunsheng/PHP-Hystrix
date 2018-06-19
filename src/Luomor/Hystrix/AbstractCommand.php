@@ -212,7 +212,6 @@ abstract class AbstractCommand {
             }
         }
         $circuitBreaker = $this->getCircuitBreaker();
-        echo "test";
         if(!$circuitBreaker->allowRequest()) {
             $metrics->markShortCircuited();
             $this->recordExecutionEvent(self::EVENT_SHORT_CIRCUITED);
