@@ -63,6 +63,7 @@ class ApcStateStorage implements StateStorageInterface {
      */
     public function incrementBucket($commandKey, $type, $index) {
         $bucketName = $this->prefix($commandKey . '_' . $type . '_' . $index);
+        echo "add bucketName:" . $bucketName;
         if(!apc_add($bucketName, 1, self::BUCKET_EXPIRE_SECONDS)) {
             apc_inc($bucketName);
         }
