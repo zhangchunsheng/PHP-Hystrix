@@ -19,6 +19,9 @@
 [PHP-Hystrix_1.0.0.1 2018-06-15 张春生]
 1.新功能:add command test
 
+[PHP-Hystrix_1.0.0.1 2018-06-19 张春生]
+1.新功能:add http request test
+
 --备注分类
 1、新功能：
 2、Bug:
