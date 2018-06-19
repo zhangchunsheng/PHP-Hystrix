@@ -46,6 +46,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase {
             ),
         ), true));
 
-        $command->execute();
+        $result = $command->execute();
+        print_r($result);
     }
 }
