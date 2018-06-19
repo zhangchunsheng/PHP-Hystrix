@@ -50,6 +50,7 @@ class ApcStateStorage implements StateStorageInterface {
      */
     public function getBucket($commandKey, $type, $index) {
         $bucketName = $this->prefix($commandKey . '_' . $type . '_' . $index);
+        echo "bucketName:" . $bucketName;
         echo "getBucket:" . apc_fetch($bucketName);
         return apc_fetch($bucketName);
     }
