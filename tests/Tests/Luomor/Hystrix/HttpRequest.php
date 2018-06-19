@@ -12,7 +12,7 @@ use Luomor\Hystrix\Exception\BadRequestException;
 
 class HttpRequest extends AbstractCommand {
     public $url = "";
-    public $params = null;
+    public $params = array();
 
     protected function run() {
         $url = $this->url . '?' . http_build_query($this->params);
