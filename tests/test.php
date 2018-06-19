@@ -61,6 +61,12 @@ class HttpRequestTest extends AbstractCommand {
         }
     }
 
+    protected function setCommandKey() {
+        $key = $this->url . '?' . http_build_query($this->params);
+        $key = md5($key);
+        $this->commandKey = $key;
+    }
+
     protected function getFallback() {
         return "fallback";
     }

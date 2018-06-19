@@ -50,7 +50,12 @@ class YacStateStorage implements StateStorageInterface {
     public function incrementBucket($commandKey, $type, $index) {
         // lock
         $bucketName = $this->prefix($commandKey . '_' . $type . '_' . $index);
-        $key = md5($bucketName);
+        if(strlen($bucketName) >= 40) {
+            $key = md5($bucketName);
+        } else {
+            $key = $bucketName;
+        }
+
         $number = $this->_yac->get($key);
         if(empty($number)) {
             $number = 1;
@@ -70,15 +75,23 @@ class YacStateStorage implements StateStorageInterface {
      */
     public function getBucket($commandKey, $type, $index) {
         $bucketName = $this->prefix($commandKey . '_' . $type . '_' . $index);
-        $key = md5($bucketName);
+        if(strlen($bucketName) >= 40) {
+            $key = md5($bucketName);
+        } else {
+            $key = $bucketName;
+        }
         return $this->_yac->get($key);
     }
 
     public function openCircuit($commandKey, $sleepingWindowInMilliseconds) {
         $openedKey = $this->prefix($commandKey . self::OPENED_NAME);
         $singleTestFlagKey = $this->prefix($commandKey . self::SINGLE_TEST_BLOCKED);
-        $openedKey = md5($openedKey);
-        $singleTestFlagKey = md5($singleTestFlagKey);
+        if(strlen($openedKey) >= 40) {
+            $openedKey = md5($openedKey);
+        }
+        if(strlen($singleTestFlagKey) >= 40) {
+            $singleTestFlagKey = md5($singleTestFlagKey);
+        }
 
         $this->_yac->set($openedKey, true);
 
@@ -97,7 +110,9 @@ class YacStateStorage implements StateStorageInterface {
      */
     public function closeCircuit($commandKey) {
         $openedKey = $this->prefix($commandKey . self::OPENED_NAME);
-        $openedKey = md5($openedKey);
+        if(strlen($openedKey) >= 40) {
+            $openedKey = md5($openedKey);
+        }
 
         $this->_yac->set($openedKey, false);
     }
@@ -111,7 +126,9 @@ class YacStateStorage implements StateStorageInterface {
      */
     public function allowSingleTest($commandKey, $sleepingWindowInMilliseconds) {
         $singleTestFlagKey = $this->prefix($commandKey . self::SINGLE_TEST_BLOCKED);
-        $singleTestFlagKey = md5($singleTestFlagKey);
+        if(strlen($singleTestFlagKey) >= 40) {
+            $singleTestFlagKey = md5($singleTestFlagKey);
+        }
 
         // using 'add' enforces thread safety.
         $sleepingWindowInSeconds = ceil($sleepingWindowInMilliseconds / 1000);
@@ -127,7 +144,9 @@ class YacStateStorage implements StateStorageInterface {
      */
     public function isCircuitOpen($commandKey) {
         $openedKey = $this->prefix($commandKey . self::OPENED_NAME);
-        $openedKey = md5($openedKey);
+        if(strlen($openedKey) >= 40) {
+            $openedKey = md5($openedKey);
+        }
 
         return (boolean) $this->_yac->get($openedKey);
     }
@@ -141,7 +160,11 @@ class YacStateStorage implements StateStorageInterface {
      */
     public function resetBucket($commandKey, $type, $index) {
         $bucketName = $this->prefix($commandKey . '_' . $type . '_' . $index);
-        $key = md5($bucketName);
+        if(strlen($bucketName) >= 40) {
+            $key = md5($bucketName);
+        } else {
+            $key = $bucketName;
+        }
 
         $this->_yac->set($key, 0, self::BUCKET_EXPIRE_SECONDS);
     }
