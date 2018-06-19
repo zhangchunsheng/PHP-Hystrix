@@ -18,7 +18,7 @@ use Luomor\Hystrix\RequestCache;
 use Luomor\Hystrix\RequestLog;
 
 class HttpRequestTest extends AbstractCommand {
-    public $url = "http://base.lan-tc.yongche.org/api/dict/getDictData";
+    public $url = "http://base.luomor.com/api/dict/getDictData";
     public $params = array(
         "dict_category_id" => 1
     );
@@ -61,7 +61,7 @@ class HttpRequestTest extends AbstractCommand {
         }
     }
 
-    protected function setCommandKey() {
+    public function setCommandKey() {
         $key = $this->url . '?' . http_build_query($this->params);
         $key = md5($key);
         $this->commandKey = $key;
@@ -83,7 +83,8 @@ class HttpRequestTest extends AbstractCommand {
 
 $command = new HttpRequestTest();
 
-$command->url = "http://base.lan-tc.yongche.org/api/dict/getDictData";
+$command->url = "http://base.luomor.com/api/dict/getDictData";
+$command->setCommandKey();
 $apcStateStorage = new ApcuStateStorage();
 $commandMetricsFactory = new CommandMetricsFactory($apcStateStorage);
 $command->setCommandMetricsFactory($commandMetricsFactory);

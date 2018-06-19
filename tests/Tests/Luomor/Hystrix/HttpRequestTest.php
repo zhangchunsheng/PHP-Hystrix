@@ -19,7 +19,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase {
     public function testHttpRequest() {
         $command = new HttpRequest();
 
-        $command->url = "http://base1.lan-tc.yongche.org/api/dict/getDictData";
+        $command->url = "http://base.luomor.com/api/dict/getDictData";
         $apcStateStorage = new YacStateStorage();
         $commandMetricsFactory = new CommandMetricsFactory($apcStateStorage);
         $command->setCommandMetricsFactory($commandMetricsFactory);

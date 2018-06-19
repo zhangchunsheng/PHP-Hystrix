@@ -11,7 +11,7 @@ use Luomor\Hystrix\AbstractCommand;
 use Luomor\Hystrix\Exception\BadRequestException;
 
 class HttpRequest extends AbstractCommand {
-    public $url = "http://base.lan-tc.yongche.org/api/dict/getDictData";
+    public $url = "http://base.luomor.com/api/dict/getDictData";
     public $params = array(
         "dict_category_id" => 1
     );
