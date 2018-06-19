@@ -10,6 +10,8 @@ namespace Tests\Luomor\Hystrix;
 use Luomor\Config\Config;
 use Luomor\Hystrix\ApcStateStorage;
 use Luomor\Hystrix\CommandMetricsFactory;
+use Luomor\Hystrix\RequestCache;
+use Luomor\Hystrix\RequestLog;
 
 class HttpRequestTest extends \PHPUnit_Framework_TestCase {
     public function testHttpRequest() {
@@ -18,6 +20,9 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase {
         $apcStateStorage = new ApcStateStorage();
         $commandMetricsFactory = new CommandMetricsFactory($apcStateStorage);
         $command->setCommandMetricsFactory($commandMetricsFactory);
+        $command->setRequestCache(new RequestCache());
+        $requestLog = new RequestLog();
+        $command->setRequestLog($requestLog);
         $command->setConfig(new Config(array(
             'fallback' => array(
                 'enabled' => true,
