@@ -36,6 +36,9 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase {
             'requestLog' => array(
                 'enabled' => true,
             ),
+            'circuitBreaker' => array(
+                'enabled' => true,
+            ),
             'metrics' => array(
                 'rollingStatisticalWindowInMilliseconds' => 1000,
                 'rollingStatisticalWindowBuckets' => 2,
