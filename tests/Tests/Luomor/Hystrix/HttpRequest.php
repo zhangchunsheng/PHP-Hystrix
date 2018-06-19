@@ -62,4 +62,8 @@ class HttpRequest extends AbstractCommand {
         $url = $this->url . '?' . http_build_query($this->params);
         return md5($url);
     }
+
+    protected function processExecutionEvent($eventName) {
+        echo "eventName:$eventName";
+    }
 }
