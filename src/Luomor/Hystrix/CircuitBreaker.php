@@ -74,6 +74,7 @@ class CircuitBreaker implements CircuitBreakerInterface {
         }
 
         $healthCounts = $this->metrics->getHealthCounts();
+        echo "getTotal:" . $healthCounts->getTotal();
         if($healthCounts->getTotal() < $this->config->get('circuitBreaker')->get('requestVolumeThreshold')) {
             // we are not past the minimum volume threshold for the statistical window
             // so we'll return false immediately and not calculate anything
@@ -81,6 +82,7 @@ class CircuitBreaker implements CircuitBreakerInterface {
         }
 
         $allowedErrorPercentage = $this->config->get('circuitBreaker')->get('errorThresholdPercentage');
+        echo "getErrorPercentage:" . $healthCounts->getErrorPercentage();
         if($healthCounts->getErrorPercentage() < $allowedErrorPercentage) {
             return false;
         } else {
