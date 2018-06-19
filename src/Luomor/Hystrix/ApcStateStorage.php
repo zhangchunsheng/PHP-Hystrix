@@ -67,6 +67,7 @@ class ApcStateStorage implements StateStorageInterface {
         if(!apc_add($bucketName, 1, self::BUCKET_EXPIRE_SECONDS)) {
             apc_inc($bucketName);
         }
+        echo "add getBucket:" . apc_fetch($bucketName);
     }
 
     /**
