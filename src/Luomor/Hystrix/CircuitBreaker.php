@@ -113,6 +113,7 @@ class CircuitBreaker implements CircuitBreakerInterface {
      * @return boolean
      */
     public function allowRequest() {
+        echo "allowRequest";
         if($this->config->get('circuitBreaker')->get('forceOpen')) {
             return false;
         }
