@@ -32,7 +32,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase {
                 'enabled' => true,
             ),
             'requestCache' => array(
-                'enabled' => false,
+                'enabled' => true,
             ),
             'requestLog' => array(
                 'enabled' => true,
